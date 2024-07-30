@@ -67,19 +67,24 @@ The bootlogs i captured. Actually i unplugged it accidentally while it was updat
 
 There is a way to enter the boot loader shell. if it says "Autobooting in 1 second" inmideatly enter 'slp' in the shell. This will halt the bot process and allow you to view the environmental variables.
 Idk how but i kind of managed to f it up and now the original bootcmd does not work anymore:
+
 'bootcmd=echo read normal boot at 0x80200000'
 
 But when resetting the environment to default using 'env default -f -a' i got an alternative bootcmd that works (it fully works and i tested it before the firmware update that failed):
+
 'bootcmd=sf probe; sf read 0x80700000 0x80200 0x175000; bootm 0x80700000'
 
 Original Bootargs:
+
 'bootargs=console=ttyS1,115200n8 mem=42M@0x0 rmem=22M@0x2a00000 root=/dev/mtdblock6 rootfstype=squashfs spdev=/dev/mtdblock7 noinitrd init=/etc/preinit'
 
 
 I then decided to see if i can get a shell and bypass the pasword protection. I patched the boot args to use /bin/sh as Init instead of /etc/preinit. This worked and i got a shell. Now i only had to mount /proc /dev and /sys but somehow running /etc/preinit worked and it did actually not start the whole application stack but just mounted everything. Now i had /proc and /dev and /sys populated most commands worked with no issue. I also managed to dump the etc/passwd file and got a password hash. Patched bootargs here:
+
 'bootargs=console=ttyS1,115200n8 mem=42M@0x0 rmem=22M@0x2a00000 root=/dev/mtdblock6 rootfstype=squashfs spdev=/dev/mtdblock7 noinitrd init=/bin/sh'
 
 Password hash in /etc/passwd. There seem to be more users but they are turned off i think. The main account is admin. It seems you only have to put in a password because when clicking enter it prompts me with a 'C200 Login':
+
 root:$1$7rMT0TnJ$e/hFcoKvc.N4w8uryOtlg/:0:0:root:/root:/bin/ash
 nobody:*:65534:65534:nobody:/var:/bin/false
 admin:*:500:500:admin:/var:/bin/false
