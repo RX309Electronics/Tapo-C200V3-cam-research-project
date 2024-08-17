@@ -93,6 +93,10 @@ ftp:*:55:55:ftp:/home/ftp:/bin/false
 
 I sadly did not manage to crack the password yet. I used hashcat and jonh and no dice! it has nothing to do with Slp or any of the other key words that worked on older v1 and v2 models that used realtek soc's. I am now trying to search through any GPL sources hoping i could find the password or how the password was generated (with a bit of luck they left some password encryption binary into the gpl sources that allows me to create and compare hashes). I might now try to replace the password and make my own hash but i am still trying to figure out how that is done cause i never done this before. I might even try to put the rootfs on an sd card and to let the kernel on the flash boot from it. I did upload the binary just now!
 
+ Fun fact the firmware is based on Openwrt because i saw multiple references to it. Its just that TPLink added some custom binaries to it. They provide the build files and it can be made via buildroot but you need to specify a variable named PR_NAME= which i think stands for productname. 
+
+I am now investigating it further to find a way to force it to update its firmware so i have the complete non corrupted firmware which i than can fully inspect. I also want to try and make my own squashfs fileststem with my own root password set as 'root' simply. I could not find any binary that created the password so i bet TPLink compiled it in in the buildroot process and its hardvoded in the etc/passwd file
+
 
 
 
